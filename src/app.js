@@ -26,7 +26,27 @@ app.post("/tweets", (req, res) => {
 
 });
 
+app.get("/tweets", (req, res) => {
 
-const PORT = 5005; // MUDAR PARAR 5000 PARA ENTREGAR O PROJETO
+    if (tweets.length === 0)
+        return res.send([]);
+
+    const last10Tweets = [];
+    for (let index = 0; index < tweets.length && index < 10; index++) {
+
+        const tweetUser = users.filter(u => u.username === tweets[index].username)[0];
+        last10Tweets.push({
+            username: tweets[index].username,
+            avatar: tweetUser.avatar,
+            tweet: tweets[index].tweet
+        })
+
+    }
+
+    res.send(last10Tweets);
+
+});
+
+const PORT = 5000;
 
 app.listen(PORT, console.log(`Server online on port ${PORT}`));
